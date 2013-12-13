@@ -1,0 +1,921 @@
+FORMAT: X-1A
+HOST: https://api.eliberty.fr/
+
+# Eliberty Webservice API - Sandbox
+Welcome to Eliberty rest api documentation.
+
+NOTE: This api is **work in progress** and will benefit of your comments.
+
+# API Securisation
+__________________
+This api is using oauth2 protocol for securised transfers. Once you have been given a client account,
+you will be able to generate access_token to sign each request.
+
+Every request will have an Authorization header
+
+Here is an exemple token:
+
+    Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
+If your authentication has failed, you will be notified:
+
+
+    {"error":"invalid_grant","error_description":"The access token provided is invalid."}
+
+For sake of simplicity, Authorization header is not represented but have to be passed on each request.
+
+
+
+# Group Catalog
+
+## Catalog [/v1/catalogs/{catalog_id}]
+Catalog represents a list of products for a given resort
+
++ Parameters
+    + catalog_id (string, `1`) ... The id of needed catalog
+
++ Model (application/json)
+
+    ```js
+    {
+        "id": 1,
+        "version": 2,
+        "name": "Chamrousse courts sejours",
+        "code": "CHRCS",
+        "currency": "EUR",
+        "resort_id": 1,
+        "created_at": 1380051935,
+        "updated_at": 1380051935
+    }
+    ```
+
+### Retrieve a catalog [GET]
+returns a given catalog by it's *id*
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Catalog][]
+
++ Response 401
+
+        Unauthorized
+
+## Catalogs Collection [/v1/catalogs{?lang,page,perpage}]
+A collection of catalogs
+
++ Parameters
+    + page = `1` (optional, number) ... Page number for results iteration.
+    + perpage = `10` (optional, number) ... Number of results per page
+    + lang = `fr` (optional, string) ... Language
+        + values
+            + `fr``
+            + `en`
+
++ Model (application/json)
+
+    ```js
+    {
+        "data":[
+            {
+                id": 1,
+                "version": 2,
+                "label": "Chamrousse courts sejours",
+                "resort_id": 1,
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            },
+            {
+                "id": 2,
+                "version": 1,
+                "label": "Monts Jura journee",
+                "resort_id": 2,
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            }
+        ],
+        "meta": {
+            "page": 1,
+            "perpage": 10,
+            "total": 25
+        }
+    }
+    ```
+
+### Retrieve All Catalogs [GET]
+Retrieves all catalogs.
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Catalogs Collection][]
+
+
+## Resort [/v1/catalogs/{catalog_id}/resort]
+Resort linked to a catalog
+
++ Model (application/json)
+
+    ```js
+    {
+        "id": 1,
+        "label": "Chamrousse",
+        "open_date": 1380051935,
+        "close_date": 1480051922,
+        "online_reloading": 1,
+        "partner_code": "CHMRO",
+        "created_at": 1380051935,
+        "updated_at": 1380051935
+    }
+    ```
+
+### Retrieve catalog resort [GET]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Catalog][]
+
+
+## Consumercategories Collection [/v1/catalogs/{catalog_id}/consumercategories{?lang,page,perpage}]
+A collection of consumer categories
+
++ Parameters
+    + page = `1` (optional, number) ... Page number for results iteration.
+    + perpage = `10` (optional, number) ... Number of results per page
+    + lang = `fr` (optional, string) ... Language
+        + values
+            + `fr``
+            + `en`
+
++ Model (application/json)
+
+    ```js
+    {
+        "data":[
+            {
+                "id": 2,
+                "label": "Adult",
+                "age_min": 17,
+                "age_max": 64,
+                "partner_code": "AD",
+                "is_familly": 0,
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            },
+            {
+                "id": 3,
+                "label": "Child",
+                "age_min": 5,
+                "age_max": 17,
+                "partner_code": "CH",
+                "is_familly": 0,
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            }
+        ],
+        "meta": {
+            "page": 1,
+            "perpage": 10,
+            "total": 2
+        }
+    }
+    ```
+
+### Retrieve list of consumer categories [GET]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Consumercategories Collection][]
+
+## Validitycategories Collection [/v1/catalogs/{catalog_id}/validitycategories{?lang,page,perpage}]
+A collection of validity categories
+
++ Parameters
+    + page = `1` (optional, number) ... Page number for results iteration.
+    + perpage = `10` (optional, number) ... Number of results per page
+    + lang = `fr` (optional, string) ... Language
+        + values
+            + `fr``
+            + `en`
+
++ Model (application/json)
+
+    ```js
+    {
+        "data":[
+            {
+                "id": 1,
+                "label": "1 day",
+                "partner_code": "1D",
+                "numeric_value": 1,
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            },
+            {
+                "id": 2,
+                "label": "2 days",
+                "partner_code": "2D",
+                "numeric_value": 2,
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            }
+        ],
+        "meta": {
+            "page": 1,
+            "perpage": 10,
+            "total": 2
+        }
+    }
+    ```
+
+### Retrieve list of validity categories [GET]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Validitycategories Collection][]
+
+## Pricecategories Collection [/v1/catalogs/{catalog_id}/pricecategories{?lang,page,perpage}]
+A collection of price categories, usually  customer pricecategories specific prices (VIP, Owners, etc..)
+
++ Parameters
+    + page = `1` (optional, number) ... Page number for results iteration.
+    + perpage = `10` (optional, number) ... Number of results per page
+    + lang = `fr` (optional, string) ... Language
+        + values
+            + `fr``
+            + `en`
+
++ Model (application/json)
+
+    ```js
+    {
+        "data":[
+            {
+                "id": 1,
+                "label": "owner",
+                "partner_code": "OWN",
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            },
+            {
+                "id": 2,
+                "label": "Vip",
+                "partner_code": "VIP",
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            }
+        ],
+        "meta": {
+            "page": 1,
+            "perpage": 10,
+            "total": 2
+        }
+    }
+    ```
+
+### Retrieve list of price categories [GET]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Pricecategories Collection][]
+
+
+## Productcategories Collection [/v1/catalogs/{catalog_id}/productcategories{?lang,page,perpage}]
+A collection of product categories, usually domains are product categories
+
++ Parameters
+    + page = `1` (optional, number) ... Page number for results iteration.
+    + perpage = `10` (optional, number) ... Number of results per page
+    + lang = `fr` (optional, string) ... Language
+        + values
+            + `fr``
+            + `en`
+
++ Model (application/json)
+
+    ```js
+    {
+        "data":[
+            {
+                "id": 1,
+                "label": "Recoin",
+                "partner_code": "REC",
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            },
+            {
+                "id": 2,
+                "label": "Roche Béranger",
+                "partner_code": "ROCB",
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            }
+        ],
+        "meta": {
+            "page": 1,
+            "perpage": 10,
+            "total": 2
+        }
+    }
+    ```
+
+### Retrieve list of product categories [GET]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Productcategories Collection][]
+
+## Timeperiods Collection [/v1/catalogs/{catalog_id}/timeperiods{?lang,page,perpage}]
+A collection of time periods
+The ski season can be devided in timeperiods where products have different prices
+
++ Parameters
+    + page = `1` (optional, number) ... Page number for results iteration.
+    + perpage = `10` (optional, number) ... Number of results per page
+    + lang = `fr` (optional, string) ... Language
+        + values
+            + `fr``
+            + `en`
+
++ Model (application/json)
+
+    ```js
+    {
+        "data":[
+            {
+                "id": 1,
+                "label": "Low season 1",
+                "from": 1380051935,
+                "to": 1390051935,
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            },
+            {
+               "id": 2,
+                "label": "High season 1",
+                "from": 1480051935,
+                "to": 1490051935,
+                "created_at": 1380051935,
+                "updated_at": 1380051935
+            }
+        ],
+        "meta": {
+            "page": 1,
+            "perpage": 10,
+            "total": 3
+        }
+    }
+    ```
+
+### Retrieve list of timeperiods [GET]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Timeperiods Collection][]
+
+## Products Collection [/v1/catalogs/{catalog_id}/products{?lang,page,perpage}]
+A collection of products
+
++ Parameters
+    + page = `1` (optional, number) ... Page number for results iteration.
+    + perpage = `10` (optional, number) ... Number of results per page
+    + lang = `fr` (optional, string) ... Language
+        + values
+            + `fr``
+            + `en`
+
++ Model (application/json)
+
+    ```js
+    {
+        "data":[
+            {
+            "id": 23,
+            "label": "1 Day",
+            "description": "A really long text descibing product",
+            "slug": "chamrousse-1day-recoin",
+            "productcategory_id": 1,
+            "validitycategory_id": 1,
+            "merchandized": false,
+            "additionnal_only": false,
+            "in_insurance": false,
+            "is_support": false,
+            "is_depot": 0,
+            "variants":[
+                {
+                    "id": 923,
+                    "consumercategory_id": 2,
+                    "sku": "chamrousse-1day-recoin-adult"
+                    "label": "Adult",
+                    "prices": {
+                        {
+                            "id": 123,
+                            "timeperiod_id": 1,
+                            "pricecategory_id": 1,
+                            "amount": 4200
+                        },
+                        {
+                            "id": 124,
+                            "timeperiod_id": 2,
+                            "pricecategory_id": 1,
+                            "amount": 4000
+                        },
+                        {
+                            "id": 125,
+                            "timeperiod_id": 3,
+                            "pricecategory_id": 1,
+                            "amount": 4400
+                        }
+                    }
+                },
+                {
+                    "id": 924,
+                    "consumercategory_id": 3,
+                    "sku": "chamrousse-2day-recoin-adult"
+                    "label": "Child",
+                    "prices": {
+                        {
+                            "id": 126,
+                            "timeperiod_id": 1,
+                            "pricecategory_id": 1,
+                            "amount": 3600
+                        },
+                        {
+                            "id": 127,
+                            "timeperiod_id": 2,
+                            "pricecategory_id": 1,
+                            "amount": 3000
+                        },
+                        {
+                            "id": 128,
+                            "timeperiod_id": 2,
+                            "pricecategory_id": 1,
+                            "amount": 3800
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": 24,
+            "label": "2 Days",
+            "description": "Here is the 2 days product description",
+            "slug": "chamrousse-2day-recoin",
+            "productcategory_id": 1,
+            "validitycategory_id": 2,
+            "merchandized": false,
+            "additionnal_only": false,
+            "in_insurance": false,
+            "is_support": false,
+            "is_depot": 0,
+            "variants":[
+                {
+                    "id": 925,
+                    "consumercategory_id": 2,
+                    "sku": "chamrousse-2day-recoin-adult"
+                    "label": "Adult",
+                    "prices": {
+                        {
+                            "id": 129,
+                            "timeperiod_id": 1,
+                            "pricecategory_id": 1,
+                            "amount": 8800
+                        },
+                        {
+                            "id": 130,
+                            "timeperiod_id": 2,
+                            "pricecategory_id": 1,
+                            "amount": 8000
+                        },
+                        {
+                            "id": 131,
+                            "timeperiod_id": 3,
+                            "pricecategory_id": 1,
+                            "amount": 7800
+                        }
+                    }
+                },
+                {
+                    "id": 926,
+                    "consumercategory_id": 3,
+                    "sku": "chamrousse-2day-recoin-child"
+                    "label": "Child",
+                    "prices": {
+                        {
+                            "id": 132,
+                            "timeperiod_id": 1,
+                            "pricecategory_id": 1,
+                            "amount": 7000
+                        },
+                        {
+                            "id": 133,
+                            "timeperiod_id": 2,
+                            "pricecategory_id": 1,
+                            "amount": 6000
+                        },
+                        {
+                            "id": 134,
+                            "timeperiod_id": 3,
+                            "pricecategory_id": 1,
+                            "amount": 7400
+                        }
+                    }
+                }
+            ]
+        }
+        ],
+        "meta": {
+            "page": 1,
+            "perpage": 10,
+            "total": 3
+        }
+    }
+    ```
+
+### Retrieve list of products [GET]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+    [Products Collection][]
+
+# Group Cart Operations
+
+## Cart Creation [/v1/carts]
+Before beeing processed, **a cart have to be created**
+
+Please use /v1/carts to initiate a cart session and get back a cartId,
+once this operation done, you wil be able to manipulate this cart.
+
+### Create a new cart [POST]
+Create a new cart
+
++ Response 201
+
+    + Headers
+
+            Location: /carts/{cart_id}
+    + Body
+
+            { "status": 201, "location": "/carts/c569de42-e659-2326-4102-1fe7a1d298c5" }
+
+## Cart [/v1/carts/{cart_id}]
+Cart is describing a buying session. You can add items to cart or update cart with all needed datas.
+
++ Parameters
+    + cart_id (string, `c569de42-e659-2326-4102-1fe7a1d298c5`) ... the guid of the cart
+
++ Model (application/json)
+
+    ```js
+    {
+        "id": "c569de42-e659-2326-4102-1fe7a1d298c5",
+        "currency": "EUR",
+        "total": 12000,
+        "adjustments_total": 0,
+        "items_total": 12000,
+        "options_total": 0,
+        "state": "cart",
+        "created_at": 1381583647,
+        "updated_at": 1381583647,
+        "items": [
+            {
+                "id": 1,
+                "variant_id": 926,
+                "price_id": 133,
+                "unit_price": 6000,
+                "quantity": 1,
+                "total": 6000,
+                "adjustments_total": 0,
+                "item_type": "ticket",
+                "start_date": "2014-02-12",
+                "card_number": "01232265445457-4",
+                "created_at": 1381583647,
+                "updated_at": 1381583647
+            },
+            {
+                "id": 2,
+                "product_id": 24,
+                "variant_id": 926,
+                "price_id": 133,
+                "unit_price": 6000,
+                "quantity": 1,
+                "total": 6000,
+                "adjustments_total": 0,
+                "item_type": "ticket",
+                "start_date": "2014-02-12",
+                "card_number": "01232265445456-3",
+                "created_at": 1381583647,
+                "updated_at": 1381583647
+            }
+        ]
+    }
+    ```
+
+### Retrieve a Cart [GET]
+Returns a specific Cart by it's id
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 200
+
+    [Cart][]
+
+### Update a Cart [PUT]
+Update a specific Cart
+
++ Request
+    [Cart][]
+
+
++ Response 202
+
+    [Cart][]
+
+### Delete a given cart [DELETE]
+Delete a specific Cart.
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+
++ Response 204
+
+
+## Cartitem [/v1/carts/{cart_id}/items/{item_id}]
+
++ Parameters
+    + cart_id (number, `3455`) ... the uniq id of an order
+
++ Model
+
+    ```js
+    {
+        "id": 1,
+        "variant_id": 926,
+        "price_id": 133,
+        "quantity": 1,
+        "start_date": "2014-02-12",
+        "card_number": "01232265445457-4"
+    }
+    ```
+    
+
+
+## CartItems [/v1/carts/{cart_id}/items]
+
+### Add a cart item [POST]
+Add an item to cart
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+    + Body 
+        ```js
+            {
+                "variant_id": 926,
+                "price_id": 133,
+                "quantity": 1,
+                "price": 600,
+                "start_date": "2014-02-12",
+                "card_number": "01232265445457-4"
+            }
+            ```
+    
++ Response 201
+
+# Group Orders
+
+
+## Order [/v1/orders/{order_id}]
+
++ Parameters
+    + order_id (number, `3455`) ... the uniq id of an order
+
++ Model
+
+    ```js
+    {
+        "id": 2335045,
+        "buyer_id": 3435,
+        "shipping_address_id": 2344,
+        "billing_address_id": 123,
+        "payment_id": 233,
+        "created_at": 1381583647,
+        "updated_at": 1381583647,
+        "currency": "EUR",
+        "total": 12000,
+        "adjustments_total": 1000,
+        "state": "confirmed",
+        "completed_at": 1381583647,
+        "transfer_status": "BookedAndTransferred",
+        "purchase_type": "firstbuy",
+        "state": "order_confirmed",
+        "items": [
+            {
+                "id": 987,
+                "short_name": "2j-chamrousse-recoin-adulte",
+                "product_label": "2 jours Chamrousse Recoin Adulte",
+                "parent_id": null,
+                "contact_id": null,
+                "variant_id": 926,
+                "price_id": 133,
+                "total": 6000,
+                "unit_price": 6000,
+                "adjustments_total": 0,
+                "quantity": 1,
+                "start_date": "2014-02-12",
+                "card_number": "01232265445457-4",
+                "created_at": 1381583647,
+                "updated_at": 1381583647
+            },
+            {
+                "id": 988,
+                "short_name": "2j-chamrousse-recoin-adulte",
+                "product_label": "2 jours Chamrousse Recoin Adulte",
+                "parent_id": null,
+                "contact_id": null,
+                "variant_id": 926,
+                "price_id": 133,
+                "total": 6000,
+                "unit_price": 6000,
+                "adjustments_total": 0,
+                "quantity": 1,
+                "start_date": "2014-02-12",
+                "card_number": "01232265445456-3",
+                "created_at": 1381583647,
+                "updated_at": 1381583647
+            },
+            {
+                "id": 989,
+                "short_name": "2j-assurance-adulte",
+                "product_label": "Assurance 2 jours Adulte",
+                "parent_id": 988,
+                "contact_id": null,
+                "variant_id": 9324,
+                "price_id": 134,
+                "total": 600,
+                "unit_price": 600,
+                "adjustments_total": 0,
+                "quantity": 1,
+                "start_date": "2014-02-12",
+                "card_number": "01232265445456-3",
+                "created_at": 1381583647,
+                "updated_at": 1381583647
+            }
+        ]
+    }
+    ```
+
+### Retrieve an order [GET]
+Returns a specific order.
+
++ Response 200
+    [Order][]
+
++ Response 404
+
+    + Body
+
+            {"code": 404, "message": "resource unavailable"}
+
+### Update a given order [PUT]
+
++ Request
+    [Order][]
+
++ Response 202
+    [Order][]
+
+### Update specifc values of a given order [PATCH]
+Used for changing order status
+
++ Request (application/json)
+
+    + Body
+
+            {"order_status": "cancelled"}
+
++ response 202
+    [Order][]
+
+
+### Cancel an order [DELETE]
+
++ Response 200
+
+    + Body
+
+            {"status": 200, "message": "Order cancelled succesfully"}
+
+# Group Contacts
+## Contacts Creation [/v1/contacts]
+
+### Add a contact  [POST]
+Create an contact
++ Request
+
+    + Headers
+
+            Authorization: Bearer YiU50TQ3Zjg5MGFkZjhhYTM3MWZkYzZlYmAg2GY2MjQxZmI5NTU1OWVjMGIySCk4Mjg0MDI2Mjc4NTM3MDJhYw
+        
+    + Body
+        ```js
+        {
+            "external_id": "Xrefexternal3434",
+            "lastname": "Delapi",
+            "firstname": "Francois",
+            "birth_date": "1970-12-12",
+            "email": "fdelapi@api.com",
+            "parent_id": null
+        }
+        ```
+
++ Response 201
+
+## Contact [/v1/contacts/{contact_id}]
+
++ Parameters
+    + contact_id (number, `3455`) ... the uniq id of a contact
+
++ Model
+
+    ```js
+    {
+        "id": 43345345,
+        "external_id": "Xrefexternal3434",
+        "lastname": "Delapi",
+        "firstname": "Francois",
+        "birth_date": "1970-12-12",
+        "email": "fdelapi@api.com",
+        "parent_id": null
+    }
+    ```
+
+### Get a contact [GET]
++ Response 200
+    [Contact][]
+
++ Response 404
+
+    + Body
+
+            {"code": 404, "message": "resource unavailable"}
+
+
+### Update a contact [PUT]
++ Request
+    [Contact][]
+
++ Response 202
+    [Contact][]
+
